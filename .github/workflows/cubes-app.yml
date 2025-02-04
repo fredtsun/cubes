@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} building cubes
 on: [push]
 jobs:
   Build:
-    name: python
+    name: build-push-deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,3 +15,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version-file: ".python-version"
+      
+      - id: "auth"
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: "${{ secrets.SERVICE_ACCOUNT_KEY }}"
+      - name: "setup gcloud sdk"
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: "gcloud info"
+        run: gcloud info
+    
+      - name: "Docker auth"
+        run: gcloud auth configure-docker ${{ vars.REGION }}-docker.pkg.dev --quiet

@@ -1,6 +1,8 @@
 name: Cubes App
 run-name: ${{ github.actor }} building cubes
 on: [push]
+env:
+  SERVICE_IMAGE_LOCATION: us-west1-docker.pkg.dev/cubes-449905/cubes/cubes-service
 jobs:
   Build:
     name: build-push-deploy
@@ -28,3 +30,9 @@ jobs:
     
       - name: "Docker auth"
         run: gcloud auth configure-docker ${{ vars.REGION }}-docker.pkg.dev --quiet
+    
+      - name: "docker build"
+        run: docker build . --file Dockerfile --tag ${{ env.SERVICE_IMAGE_LOCATION }}
+    
+      - name: "docker push"
+        run: docker push ${{ env.SERVICE_IMAGE_LOCATION }}

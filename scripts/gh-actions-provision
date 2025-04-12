@@ -1,0 +1,2 @@
+gcloud iam service-accounts create githubactions --description="service acct for github actions" --display-name="Github Actions"
+gcloud iam service-accounts add-iam-policy-binding 879162666604-compute@developer.gserviceaccount.com --member="serviceAccount:githubactions@cubes-449905.iam.gserviceaccount.com" --role="roles/iam.serviceAccountUser"
